@@ -5,10 +5,19 @@ import (
 	"os"
 
 	"github.com/mattacton/meeting-lights/internal/keys"
+	"github.com/mattacton/meeting-lights/internal/lights"
+	"github.com/mattacton/meeting-lights/internal/you"
 	"golang.org/x/term"
 )
 
 func main() {
+	var doeet = new(you.Doeet)
+	doeet.DoWhat = map[string]you.Thees {
+		"jj": lights.PrintLights,
+		"a": lights.PrintLights,
+	}
+
+	// Get a continuous stream of key presses
 	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 	if err != nil {
 		fmt.Println(err)
@@ -16,14 +25,16 @@ func main() {
 	}
 	defer term.Restore(int(os.Stdin.Fd()), oldState)
 
-	keyCh := make(chan []byte)
-	go keys.Pressed(keyCh)
+	keyCh := keys.Bundled()
 
 	for {
-		keyPressed := <-keyCh
-		fmt.Printf("%s", string(keyPressed))
-		if 'x' == keyPressed[0] {
-			return
+		select {
+		case keyBundle := <-keyCh: {
+			doeet.Now(keyBundle)
+			if keyBundle == "x" {
+				os.Exit(0)
+			}
+		}
 		}
 	}
 }
