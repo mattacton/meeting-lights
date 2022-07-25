@@ -33,12 +33,13 @@ func main() {
 
 	keyCh := keys.Bundled()
 
-	for {
+	areWeDone := false
+	for !areWeDone {
 		select {
 		case keyBundle := <-keyCh: {
 			doeet.Now(keyBundle)
 			if keyBundle == "x" {
-				os.Exit(0)
+				areWeDone = true
 			}
 		}
 		}
