@@ -14,7 +14,7 @@ var doeet you.Doeet
 
 func init() {
 	doeet = you.Doeet {
-		DoWhat: map[string]you.Thees {
+		DoWhat: map[string]func(keys string) {
 			"jj": lights.PrintLights,
 			"a": lights.PrintLights,
 		},
