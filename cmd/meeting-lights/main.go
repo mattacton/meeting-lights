@@ -10,12 +10,18 @@ import (
 	"golang.org/x/term"
 )
 
-func main() {
-	var doeet = new(you.Doeet)
-	doeet.DoWhat = map[string]you.Thees {
-		"jj": lights.PrintLights,
-		"a": lights.PrintLights,
+var doeet you.Doeet
+
+func init() {
+	doeet = you.Doeet {
+		DoWhat: map[string]you.Thees {
+			"jj": lights.PrintLights,
+			"a": lights.PrintLights,
+		},
 	}
+}
+
+func main() {
 
 	// Get a continuous stream of key presses
 	oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
