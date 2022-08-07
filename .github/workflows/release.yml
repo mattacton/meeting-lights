@@ -20,7 +20,8 @@ jobs:
     - uses: wangyoucao577/go-release-action@v1.30
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        build_command: go build ./cmd/meeting-lights
+        project_path: "./cmd/meeting-lights"
+        binary_name: "meeting-lights"
         goos: ${{ matrix.goos }}
         goarch: ${{ matrix.goarch }}
         goversion: 1.18
