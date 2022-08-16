@@ -49,19 +49,20 @@ func Bundled() chan string {
 		var keyBuffer strings.Builder
 		for {
 			select {
-			case keyPressed := <-keyPresses: {
-				if buffIt {
-					keyBuffer.WriteString(keyPressed)
-				} else {
-					buffIt = true
-					keyBuffer.WriteString(keyPressed)
-					time.AfterFunc(500 * time.Millisecond, func() {
-						buffIt = false
-						keyBundles <- keyBuffer.String()
-						keyBuffer.Reset()
-					})
+			case keyPressed := <-keyPresses:
+				{
+					if buffIt {
+						keyBuffer.WriteString(keyPressed)
+					} else {
+						buffIt = true
+						keyBuffer.WriteString(keyPressed)
+						time.AfterFunc(500*time.Millisecond, func() {
+							buffIt = false
+							keyBundles <- keyBuffer.String()
+							keyBuffer.Reset()
+						})
+					}
 				}
-			}
 			}
 		}
 	}()
